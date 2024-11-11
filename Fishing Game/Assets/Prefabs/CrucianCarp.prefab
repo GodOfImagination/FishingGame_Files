@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8711632113642073177}
   - component: {fileID: 7019976611738798505}
   m_Layer: 0
-  m_Name: Crucian Carp
+  m_Name: CrucianCarp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

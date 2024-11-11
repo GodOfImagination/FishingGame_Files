@@ -13,14 +13,20 @@ public class Fish : MonoBehaviour
     private Vector3 OffsetRotate = new Vector3(0, -1f, 0);
 
     private GameObject Bait;
+    private GameObject CatchBox;
     private Fishing FishingScript;
+    private Catch CatchScript;
     private Spawner SpawnerScript;
 
     void Start()
     {
         Bait = GameObject.Find("Bait");
+        CatchBox = GameObject.Find("CatchBox");
         FishingScript = GameObject.FindObjectOfType<Fishing>();
+        CatchScript = GameObject.FindObjectOfType<Catch>();
         SpawnerScript = GameObject.FindObjectOfType<Spawner>();
+
+        CatchBox.SetActive(false);
     }
 
     void Update()
@@ -71,6 +77,22 @@ public class Fish : MonoBehaviour
     {
         if (BaitTaken)
         {
+            CatchBox.SetActive(true);
+
+            if (gameObject.name == "CrucianCarp" | gameObject.name == "CrucianCarp(Clone)")
+            {
+                CatchScript.CaughtCarp();
+            }
+            else if (gameObject.name == "Dace" | gameObject.name == "Dace(Clone)")
+            {
+                CatchScript.CaughtDace();
+            }
+            else if (gameObject.name == "BlackBass" | gameObject.name == "BlackBass(Clone)")
+            {
+                CatchScript.CaughtBass();
+            }
+
+            CatchScript.CaughtFish();
             SpawnerScript.FishCaught();
             Destroy(this.gameObject);
         }

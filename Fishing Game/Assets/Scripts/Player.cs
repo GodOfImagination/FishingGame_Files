@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public float PlayerWalkSpeed = 2.0f;
     public float PlayerRunSpeed = 6.0f;
     public bool LineCasted = false;
+    public bool CutsceneIsPlaying = false;
 
     private CharacterController PlayerController;
     private Vector3 PlayerVelocity;
@@ -29,11 +30,21 @@ public class Player : MonoBehaviour
         LineCasted = false;
     }
 
+    public void CutsceneStart()
+    {
+        CutsceneIsPlaying = true;
+    }
+
+    public void CutsceneEnd()
+    {
+        CutsceneIsPlaying = false;
+    }
+
     void Update()
     {
         PlayerCamera.transform.position = transform.position + new Vector3(0, 3, -5);
 
-        if (LineCasted == false)
+        if (LineCasted == false && CutsceneIsPlaying == false)
         {
             if (PlayerVelocity.y < 0)
             {

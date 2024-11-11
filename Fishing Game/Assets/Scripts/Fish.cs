@@ -4,34 +4,52 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-    public float RemainingTime = 5.0f;
-    public bool TimerIsRunning = false;
-    public bool IsReady = false;
+    public float NibbleTimer = 5.0f;      // Used to determine how much time the player needs to wait until the fish is ready to be caught.
+    public bool TimerIsRunning = false;   // Used to determine whether the timer is running or not.
+    public bool CanLookAt = false;        // Used to determine whether the fish can look at the bait or not.
+    public bool BaitTaken = false;        // Used to determine whether the fish is ready to be caught or not.
 
-    public Vector3 offset;
-    public Vector3 offsetRotate;
+    private Vector3 Offset = new Vector3(0, 0, 0.01f);
+    private Vector3 OffsetRotate = new Vector3(0, -1f, 0);
+
+    private GameObject Bait;
+    private Fishing FishingScript;
+    private Spawner SpawnerScript;
+
+    void Start()
+    {
+        Bait = GameObject.Find("Bait");
+        FishingScript = GameObject.FindObjectOfType<Fishing>();
+        SpawnerScript = GameObject.FindObjectOfType<Spawner>();
+    }
 
     void Update()
     {
         if (TimerIsRunning)
         {
-            if (RemainingTime > 0)
+            if (NibbleTimer > 0)
             {
-                RemainingTime -= Time.deltaTime;
+                NibbleTimer -= Time.deltaTime;
             }
             else
             {
-                RemainingTime = 0;
+                NibbleTimer = 0;
                 TimerIsRunning = false;
                 TimerEnded();
             }
         }
 
-        if (IsReady)
+        if (CanLookAt)
         {
-            transform.rotation = transform.rotation * Quaternion.Euler(offsetRotate);
-            transform.position = transform.position + (transform.rotation * offset);
-        }    
+            Vector3 BaitPostition = new Vector3(Bait.transform.position.x, transform.position.y, Bait.transform.position.z);
+            transform.LookAt(BaitPostition);
+        }
+
+        if (BaitTaken)
+        {
+            transform.position = transform.position + (transform.rotation * Offset);
+            transform.rotation = transform.rotation * Quaternion.Euler(OffsetRotate);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,24 +57,28 @@ public class Fish : MonoBehaviour
         if (other.gameObject.name == "Bait")
         {
             TimerIsRunning = true;
+            CanLookAt = true;
         }
     }
 
     private void TimerEnded()
     {
-        IsReady = true;
+        CanLookAt = false;
+        BaitTaken = true;
     }
 
     public void ReelIn()
     {
-        if (IsReady)
+        if (BaitTaken)
         {
+            SpawnerScript.FishCaught();
             Destroy(this.gameObject);
         }
         else
         {
+            NibbleTimer = 5.0f;
             TimerIsRunning = false;
-            RemainingTime = 5.0f;
+            CanLookAt = false;
         }
     }
 }

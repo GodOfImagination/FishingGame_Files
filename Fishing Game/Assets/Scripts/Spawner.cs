@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject Fish;
+    public List<GameObject> FishList = new List<GameObject>();   // Contains the different fishes that can be spawned.
+    public List<Vector3> SpawnPoints = new List<Vector3>();      // Contains the different points that the fishes can be spawned at.
+
+    public int RandomFish;                                       // The fish chosen to be summoned.
+    public int RandomPoint;                                      // The spawn point chosen for the fish to be summoned at.
 
     public void FishCaught()
     {
@@ -13,8 +17,11 @@ public class Spawner : MonoBehaviour
 
     IEnumerator SpawnFish()
     {
+        RandomFish = Random.Range(0, FishList.Count);
+        RandomPoint = Random.Range(0, SpawnPoints.Count);
+
         yield return new WaitForSeconds(10f);
 
-        Instantiate(Fish, transform.position, Quaternion.identity);
+        Instantiate(FishList[RandomFish], SpawnPoints[RandomPoint], Quaternion.identity);
     }
 }

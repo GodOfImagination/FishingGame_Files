@@ -33,11 +33,7 @@ public class Player : MonoBehaviour
     {
         PlayerCamera.transform.position = transform.position + new Vector3(0, 3, -5);
 
-        if (LineCasted)
-        {
-
-        }
-        else
+        if (LineCasted == false)
         {
             if (PlayerVelocity.y < 0)
             {

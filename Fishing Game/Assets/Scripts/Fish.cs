@@ -16,7 +16,6 @@ public class Fish : MonoBehaviour
     private GameObject CatchBox;
     private Fishing FishingScript;
     private Catch CatchScript;
-    private Spawner SpawnerScript;
 
     void Start()
     {
@@ -24,9 +23,8 @@ public class Fish : MonoBehaviour
         CatchBox = GameObject.Find("CatchBox");
         FishingScript = GameObject.FindObjectOfType<Fishing>();
         CatchScript = GameObject.FindObjectOfType<Catch>();
-        SpawnerScript = GameObject.FindObjectOfType<Spawner>();
 
-        CatchBox.SetActive(false);
+        CatchBox.transform.position = new Vector3(CatchBox.transform.position.x, -500, CatchBox.transform.position.z);
     }
 
     void Update()
@@ -77,7 +75,7 @@ public class Fish : MonoBehaviour
     {
         if (BaitTaken)
         {
-            CatchBox.SetActive(true);
+            CatchBox.transform.position = new Vector3(CatchBox.transform.position.x, 150, CatchBox.transform.position.z);
 
             if (gameObject.name == "CrucianCarp" | gameObject.name == "CrucianCarp(Clone)")
             {
@@ -93,7 +91,6 @@ public class Fish : MonoBehaviour
             }
 
             CatchScript.CaughtFish();
-            SpawnerScript.FishCaught();
             Destroy(this.gameObject);
         }
         else

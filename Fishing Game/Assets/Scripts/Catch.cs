@@ -17,6 +17,7 @@ public class Catch : MonoBehaviour
     private GameObject CatchBox;
     private TMP_Text CatchText;
 
+    private Spawner SpawnerScript;
     private Player PlayerScript;
     private bool CutsceneIsPlaying = false;
 
@@ -28,13 +29,11 @@ public class Catch : MonoBehaviour
         Arm = GameObject.Find("ArmLeft");
         ArmCatch = GameObject.Find("FakeArm");
 
-        MainCamera = GameObject.Find("MainCamera");
-        CatchCamera = GameObject.Find("CatchCamera");
-
         CatchFish = GameObject.Find("FakeFish");
         CatchBox = GameObject.Find("CatchBox");
         CatchText = GetComponent<TMP_Text>();
 
+        SpawnerScript = GameObject.FindObjectOfType<Spawner>();
         PlayerScript = GameObject.FindObjectOfType<Player>();
 
 
@@ -45,7 +44,7 @@ public class Catch : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && CutsceneIsPlaying)
+        if (Input.GetKeyDown(KeyCode.C) && CutsceneIsPlaying)
         {
             MainCamera.SetActive(true);
             CatchCamera.SetActive(false);
@@ -53,8 +52,9 @@ public class Catch : MonoBehaviour
             Arm.SetActive(true);
             ArmCatch.SetActive(false);
 
-            CatchBox.SetActive(false);
+            CatchBox.transform.position = new Vector3(CatchBox.transform.position.x, -500, CatchBox.transform.position.z);
 
+            SpawnerScript.FishCaught();
             PlayerScript.CutsceneEnd();
             CutsceneIsPlaying = false;
         }

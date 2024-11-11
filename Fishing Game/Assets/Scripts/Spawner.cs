@@ -10,6 +10,11 @@ public class Spawner : MonoBehaviour
     public int RandomFish;                                       // The fish chosen to be summoned.
     public int RandomPoint;                                      // The spawn point chosen for the fish to be summoned at.
 
+    void Start()
+    {
+        StartCoroutine(SpawnFish());
+    }
+
     public void FishCaught()
     {
         StartCoroutine(SpawnFish());
